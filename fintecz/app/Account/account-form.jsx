@@ -5,13 +5,19 @@ import {
   Input,
   FormControl,
   FormLabel,
-  FormErrorMessage,
+  Stat,
+  StatLabel,
+  StatNumber,
+  StatHelpText,
+  StatArrow,
+  StatGroup,
   FormHelperText,
   Button,
   Avatar,
   AvatarBadge,
   Spinner,
  } from '@chakra-ui/react'
+import Chat from './Chat'
 
 export default function AccountForm({ session }) {
   const supabase = createClientComponentClient()
@@ -19,6 +25,7 @@ export default function AccountForm({ session }) {
   const [fullname, setFullname] = useState(null)
   const [username, setUsername] = useState(null)
   const [website, setWebsite] = useState(null)
+  const [wallet, setWallet] = useState(null)
   const [avatar_url, setAvatarUrl] = useState(null)
   const user = session?.user
 
@@ -28,7 +35,7 @@ export default function AccountForm({ session }) {
 
       const { data, error, status } = await supabase
         .from('profiles')
-        .select(`full_name, username, website, avatar_url`)
+        .select(`full_name, username, website, avatar_url, wallet`)
         .eq('id', user?.id)
         .single()
 
@@ -41,6 +48,7 @@ export default function AccountForm({ session }) {
         setUsername(data.username)
         setWebsite(data.website)
         setAvatarUrl(data.avatar_url)
+        setWallet(data.wallet)
       }
     } catch (error) {
       alert('Error loading user data!')
@@ -76,7 +84,15 @@ export default function AccountForm({ session }) {
 
   return (
     <main className="w-screen h-screen bg-black flex flex-col justify-center gap-4 items-center">
-      <Avatar size='2xl' name={fullname} src='https://bit.ly/broken-link' className=' shadow-lg shadow-teal-200' />
+      <section className=' w-1/2 h-max flex flex-row justify-between gap-12 items-center text-white '>
+        <Avatar size='2xl' name={fullname} src='https://bit.ly/broken-link' className=' shadow-lg shadow-teal-200' />
+        <Stat className=' font-KulimPark font-normal text-xl '>
+          <StatLabel className=' font-KulimPark font-normal text-xl '>Your Wallet</StatLabel>
+          <StatNumber className=' font-KulimPark font-normal text-xl'>₹{wallet}</StatNumber>
+          <StatHelpText className=' font-KulimPark font-normal text-xl'>currently in wallet</StatHelpText>
+        </Stat>
+        <Chat />
+      </section>
       <section className=' bg-zinc-900 border-teal-400 rounded-lg w-1/2 h-1/2 border shadow-inner p-12 flex flex-col gap-2 items-start justify-evenly text-white '>
         <FormControl>
           <FormLabel>Email address</FormLabel>
@@ -104,16 +120,10 @@ export default function AccountForm({ session }) {
           <FormHelperText>This is what others will see</FormHelperText>
         </FormControl>
         
-        {/* <div>
-          <label htmlFor="website">Website</label>
-          <input
-            id="website"
-            type="url"
-            value={website || ''}
-            onChange={(e) => setWebsite(e.target.value)}
-          />
-        </div> */}
+        
 
+
+        
       </section>
 
       <div className=' flex flex-row justify-between w-1/2'>
@@ -132,6 +142,7 @@ export default function AccountForm({ session }) {
           </Button>
         </form>
       </div>
+      
     </main>
   )
 }

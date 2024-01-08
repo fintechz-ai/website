@@ -20,7 +20,7 @@ export default function Home() {
             </p>
             <div className=' my-6 mx-2 gap-6 flex flex-row'>
               <Button variant='solid' bg='black' color='white' colorScheme='blackAlpha' borderRadius='0' className=' px-6 py-2 font-MerriWeather font-normal text-base '>Download Now</Button>
-              <Link href='/Account/Ai' >
+              <Link href='/Account' >
                 <Image src={Aibutton} width={129} height={133} className=' hover:translate-y-3 hover:translate-x-1 ease-in-out duration-300' />
               </Link>
             </div>
