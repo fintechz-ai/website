@@ -14,10 +14,11 @@ import {
   FormHelperText,
   Button,
   Avatar,
-  AvatarBadge,
+  Badge,
   Spinner,
  } from '@chakra-ui/react'
 import Chat from './Chat'
+import { useRouter } from 'next/navigation'
 
 export default function AccountForm({ session }) {
   const supabase = createClientComponentClient()
@@ -28,6 +29,8 @@ export default function AccountForm({ session }) {
   const [wallet, setWallet] = useState(null)
   const [avatar_url, setAvatarUrl] = useState(null)
   const user = session?.user
+
+  const router = useRouter()
 
   const getProfile = useCallback(async () => {
     try {
@@ -91,6 +94,9 @@ export default function AccountForm({ session }) {
           <StatNumber className=' font-KulimPark font-normal text-xl'>₹{wallet}</StatNumber>
           <StatHelpText className=' font-KulimPark font-normal text-xl'>currently in wallet</StatHelpText>
         </Stat>
+        <Button variant='ghost' colorScheme='teal' className=' hover:bg-[#090909]' onClick={() => router.push('/Account/Usage')}>
+          <Badge colorScheme="green">Usage Metrics</Badge>
+        </Button>
         <Chat />
       </section>
       <section className=' bg-zinc-900 border-teal-400 rounded-lg w-1/2 h-1/2 border shadow-inner p-12 flex flex-col gap-2 items-start justify-evenly text-white '>
